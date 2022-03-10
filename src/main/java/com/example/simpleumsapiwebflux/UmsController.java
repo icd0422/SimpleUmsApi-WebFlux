@@ -2,11 +2,11 @@ package com.example.simpleumsapiwebflux;
 
 import com.example.simpleumsapiwebflux.entity.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RequestMapping("/users")
@@ -18,5 +18,10 @@ public class UmsController {
     @GetMapping("/{uid}")
     public Mono<User> geUser(@PathVariable Long uid) {
         return reactiveUserRepository.findById(uid);
+    }
+
+    @GetMapping
+    public Flux<User> geUsers(@RequestParam List<Long> uids) {
+        return reactiveUserRepository.findAllByIdIn(uids);
     }
 }
